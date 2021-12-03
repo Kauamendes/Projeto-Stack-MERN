@@ -19,5 +19,13 @@ dataSchema.pre('save',function(next) {
     }
 });
 
+dataSchema.pre('findOneAndUpdate',function(next) {
+    var password = this.getUpdate().senha+"";
+    if(password.length < 55) {
+        this.getUpdate().senha = bcrypt.hashSync(password,10);
+    }
+    next();
+});
+
 const usuario = mongoose.model('Usuarios',dataSchema);
 module.exports = usuario;

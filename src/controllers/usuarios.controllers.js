@@ -29,9 +29,24 @@ module.exports = {
     },
 
     async details(req,res) {
-        console.log("Rota usuario get one");
+        console.log("Rota usuario get by id");
         const id = req.params.id.trim();
-        const user = await usuario.findById(id);
+        const user = await usuario.findOne({id});
         res.json(user);
     },
+
+    async delete(req,res) {
+        console.log("Rota delete");
+        const id = req.params.id.trim();
+        const user = await usuario.findByIdAndDelete(id);
+        return res.json(user);
+    },
+
+    async update(req,res) {
+        console.log("rota update");
+        const {_id,nome,email,tipo_usuario,senha} = req.body;
+        const data = {nome,email,tipo_usuario,senha};
+        const user = await usuario.findOneAndUpdate({_id},data,{new:true});
+        res.json(user);
+    }
 }
